@@ -22,6 +22,8 @@ const lydianPattern = [0, 0, 0, 1, 0, 0, 0];
 const mixolydianPattern = [0, 0, 0, 0, 0, 0, -1];
 const aeolianPattern = [0, 0, -1, 0, 0, -1, -1];
 const locrianPattern = [0, -1, -1, 0, -1, -1, -1];
+const harmonicMinorPattern = [0, 0, -1, 0, 0, -1, 0];
+const melodicMinorPattern = [0, 0, -1, 0, 0, 0, 0];
 
 //mode names and order
 const modes = [
@@ -32,10 +34,12 @@ const modes = [
   mixolydianPattern,
   aeolianPattern,
   locrianPattern,
+  harmonicMinorPattern,
+  melodicMinorPattern,
 ];
 
 //Function to find the scale based on note and modal name
-const scales = function (note, mode) {
+const whatScale = function (note, mode) {
   return majorScale(note).map((x, i) =>
     notes.indexOf(x) + mode[i] < 0
       ? notes[notes.indexOf(x) + mode[i] + notes.length]
@@ -46,33 +50,44 @@ const scales = function (note, mode) {
 };
 
 //Function to find the name of the scale based on chord
-const scaleFind = function (...chords) {
+const whereScale = function (...chords) {
   let key = chords[0];
-  let keyModes = modes.map((x, i) => scales(key, modes[i]));
+  let keyModes = modes.map((x, i) => whatScale(key, modes[i]));
   let theMode = keyModes.map((x) => chords.every((y) => x.includes(y)));
+  //-----------CHANGE REQUIRED TO ACCOMADATE MULTIPLE SCALE OPTIONS--------------------
   switch (theMode.indexOf(true)) {
     case 0:
-      return String(keyModes[0][0]) + " Ionian";
+      return `${keyModes[0][0]} Ionian`;
       break;
     case 1:
-      return String(keyModes[0][0]) + " Dorian";
+      return `${keyModes[0][0]} Dorian`;
       break;
     case 2:
-      return String(keyModes[0][0]) + " Phrygian";
+      return `${keyModes[0][0]} Phrygian`;
       break;
     case 3:
-      return String(keyModes[0][0]) + " Lydian";
+      return `${keyModes[0][0]} Lydian`;
       break;
     case 4:
-      return String(keyModes[0][0]) + " Mixolydian";
+      return `${keyModes[0][0]} Mixolydian`;
       break;
     case 5:
-      return String(keyModes[0][0]) + " Aeolian";
+      return `${keyModes[0][0]} Aeolian`;
       break;
     case 6:
-      return String(keyModes[0][0]) + " Locrian";
+      return `${keyModes[0][0]} Locrian`;
       break;
+    case 7:
+      return `${keyModes[0][0]} Harmonic Minor`;
+      break;
+    case 8:
+      return `${keyModes[0][0]} Melodic Minor`;
+      break;
+    default:
+      return "There Is A Wrong Note!";
   }
 };
 
-console.log(scaleFind("D", "G", "A", "C"));
+console.log(whatScale("C", ionianPattern));
+console.log(whereScale("D", "G#", "A", "C#"));
+console.log(whereScale("C", "D", "D#", "F", "G", "A", "B"));
