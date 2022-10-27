@@ -13,66 +13,38 @@ const majorScale = function (n) {
   return answer;
 };
 //Minor Scale
-const minorPattern = [0, 0, -1, 0, 0, -1, -1, 0];
 const ionianPattern = [0, 0, 0, 0, 0, 0, 0, 0];
 const dorianPattern = [0, 0, -1, 0, 0, 0, -1, 0];
 const phrygianPattern = [0, -1, -1, 0, 0, -1, -1, 0];
-const mixolydianPattern = [0, 0, 0, 0, 0, 0, -1, 0];
 const lydianPattern = [0, 0, 0, 1, 0, 0, 0, 0];
+const mixolydianPattern = [0, 0, 0, 0, 0, 0, -1, 0];
+const aeolianPattern = [0, 0, -1, 0, 0, -1, -1, 0];
 const locrianPattern = [0, 1, -1, 0, -1, -1, -1, 0];
 
 //modes
 const modes = [
-  majorPattern,
+  ionianPattern,
   dorianPattern,
   phrygianPattern,
   lydianPattern,
   mixolydianPattern,
-  minorPattern,
+  aeolianPattern,
   locrianPattern,
 ];
 
 //Scale Function
 const scales = function (note, mode) {
-  return majorScale(note).map((x, i) => notes[notes.indexOf(x) + mode[i]]);
+  return majorScale(note).map((x, i) =>
+    notes.indexOf(x) + mode[i] < 0
+      ? notes[notes.indexOf(x) + mode[i] + notes.length]
+      : notes.indexOf(x) + mode[i] > notes.length
+      ? notes[notes.indexOf(x) + mode[i] - notes.length]
+      : notes[notes.indexOf(x) + mode[i]]
+  );
 };
 
-// const minorScale = function (n) {
-//   return majorScale(n).map((x, i) => notes[notes.indexOf(x) + minorPattern[i]]);
-// };
-
-// const dorianScale = function (n) {
-//   return majorScale(n).map(
-//     (x, i) => notes[notes.indexOf(x) + dorianPattern[i]]
-//   );
-// };
-
-// const phrygianScale = function (n) {
-//   return majorScale(n).map(
-//     (x, i) => notes[notes.indexOf(x) + phrygianPattern[i]]
-//   );
-// };
-
-// const lydianScale = function (n) {
-//   return majorScale(n).map(
-//     (x, i) => notes[notes.indexOf(x) + lydianPattern[i]]
-//   );
-// };
-
-// const mixolydianScale = function (n) {
-//   return majorScale(n).map(
-//     (x, i) => notes[notes.indexOf(x) + mixolydianPattern[i]]
-//   );
-// };
-
-// const locrianScale = function (n) {
-//   return majorScale(n).map(
-//     (x, i) => notes[notes.indexOf(x) + locrianPattern[i]]
-//   );
-// };
-
-console.log(scales("D#", ionianPattern));
-// console.log(scales("G", dorianPattern));
+console.log(scales("G#", ionianPattern));
+console.log(scales("G", dorianPattern));
 console.log(scales("G", phrygianPattern));
 // console.log(scales("G", lydianPattern));
 // console.log(scales("G", mixolydianPattern));
