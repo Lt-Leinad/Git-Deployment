@@ -39,6 +39,7 @@ const modes = [
 ];
 
 //Function to find the scale based on note and modal name
+//----------MORE DESCRIPTIVE FUNCTION NAMES NEEDED----------
 const whatScale = function (note, mode) {
   return majorScale(note).map((x, i) =>
     notes.indexOf(x) + mode[i] < 0
