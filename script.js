@@ -38,9 +38,21 @@ const modes = [
   melodicMinorPattern,
 ];
 
+const modeNames = [
+  "Ionian",
+  "Dorian",
+  "Phrygian",
+  "Lydian",
+  "Mixolydian",
+  "Aeolian",
+  "Locrian",
+  "Harmonic Minor",
+  "Melodic Minor",
+];
+
 //Function to find the scale based on note and modal name
 //----------MORE DESCRIPTIVE FUNCTION NAMES NEEDED----------
-const whatScale = function (note, mode) {
+const findScaleNotes = function (note, mode) {
   return majorScale(note).map((x, i) =>
     notes.indexOf(x) + mode[i] < 0
       ? notes[notes.indexOf(x) + mode[i] + notes.length]
@@ -51,44 +63,16 @@ const whatScale = function (note, mode) {
 };
 
 //Function to find the name of the scale based on chord
-const whereScale = function (...chords) {
+const findScaleName = function (...chords) {
   let key = chords[0];
-  let keyModes = modes.map((x, i) => whatScale(key, modes[i]));
-  let theMode = keyModes.map((x) => chords.every((y) => x.includes(y)));
-  //-----------CHANGE REQUIRED TO ACCOMADATE MULTIPLE SCALE OPTIONS--------------------
-  switch (theMode.indexOf(true)) {
-    case 0:
-      return `${keyModes[0][0]} Ionian`;
-      break;
-    case 1:
-      return `${keyModes[0][0]} Dorian`;
-      break;
-    case 2:
-      return `${keyModes[0][0]} Phrygian`;
-      break;
-    case 3:
-      return `${keyModes[0][0]} Lydian`;
-      break;
-    case 4:
-      return `${keyModes[0][0]} Mixolydian`;
-      break;
-    case 5:
-      return `${keyModes[0][0]} Aeolian`;
-      break;
-    case 6:
-      return `${keyModes[0][0]} Locrian`;
-      break;
-    case 7:
-      return `${keyModes[0][0]} Harmonic Minor`;
-      break;
-    case 8:
-      return `${keyModes[0][0]} Melodic Minor`;
-      break;
-    default:
-      return "There Is A Wrong Note!";
-  }
+  let keyModes = modes.map((x, i) => findScaleNotes(key, modes[i]));
+  let theModes = keyModes.map((x) => chords.every((y) => x.includes(y)));
+  let answer = [];
+  theModes.forEach((x, i) => {
+    if (x) answer.push(`${key} ${modeNames[i]}`);
+  });
+  return answer.length > 0 ? answer : "That's a very complex key change!";
 };
 
-console.log(whatScale("C", ionianPattern));
-console.log(whereScale("D", "G#", "A", "C#"));
-console.log(whereScale("C", "D", "D#", "F", "G", "A", "B"));
+console.log(findScaleNotes("C", melodicMinorPattern));
+console.log(findScaleName("B", "D", "F", "F#"));
