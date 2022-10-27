@@ -21,6 +21,7 @@ const mixolydianPattern = [0, 0, 0, 0, 0, 0, -1, 0];
 const lydianPattern = [0, 0, 0, 1, 0, 0, 0, 0];
 const locrianPattern = [0, 1, -1, 0, -1, -1, -1, 0];
 
+//modes
 const modes = [
   majorPattern,
   dorianPattern,
