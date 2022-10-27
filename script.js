@@ -1,6 +1,7 @@
 const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 //W W H W W W H
-const majorPattern = [0, 2, 2, 1, 2, 2, 2, 1];
+//Function to find the major scale
+const majorPattern = [0, 2, 2, 1, 2, 2, 2];
 const majorScale = function (n) {
   let answer = [];
   let count = notes.indexOf(n);
@@ -12,16 +13,17 @@ const majorScale = function (n) {
   }
   return answer;
 };
-//Minor Scale
-const ionianPattern = [0, 0, 0, 0, 0, 0, 0, 0];
-const dorianPattern = [0, 0, -1, 0, 0, 0, -1, 0];
-const phrygianPattern = [0, -1, -1, 0, 0, -1, -1, 0];
-const lydianPattern = [0, 0, 0, 1, 0, 0, 0, 0];
-const mixolydianPattern = [0, 0, 0, 0, 0, 0, -1, 0];
-const aeolianPattern = [0, 0, -1, 0, 0, -1, -1, 0];
-const locrianPattern = [0, 1, -1, 0, -1, -1, -1, 0];
 
-//modes
+//modal mutations patterns
+const ionianPattern = [0, 0, 0, 0, 0, 0, 0];
+const dorianPattern = [0, 0, -1, 0, 0, 0, -1];
+const phrygianPattern = [0, -1, -1, 0, 0, -1, -1];
+const lydianPattern = [0, 0, 0, 1, 0, 0, 0];
+const mixolydianPattern = [0, 0, 0, 0, 0, 0, -1];
+const aeolianPattern = [0, 0, -1, 0, 0, -1, -1];
+const locrianPattern = [0, -1, -1, 0, -1, -1, -1];
+
+//mode names and order
 const modes = [
   ionianPattern,
   dorianPattern,
@@ -32,7 +34,7 @@ const modes = [
   locrianPattern,
 ];
 
-//Scale Function
+//Function to find the scale based on note and modal name
 const scales = function (note, mode) {
   return majorScale(note).map((x, i) =>
     notes.indexOf(x) + mode[i] < 0
@@ -43,10 +45,34 @@ const scales = function (note, mode) {
   );
 };
 
-console.log(scales("G#", ionianPattern));
-console.log(scales("G", dorianPattern));
-console.log(scales("G", phrygianPattern));
-// console.log(scales("G", lydianPattern));
-// console.log(scales("G", mixolydianPattern));
-// console.log(scales("A", minorPattern));
-// console.log(scales("G", locrianPattern));
+//Function to find the name of the scale based on chord
+const scaleFind = function (...chords) {
+  let key = chords[0];
+  let keyModes = modes.map((x, i) => scales(key, modes[i]));
+  let theMode = keyModes.map((x) => chords.every((y) => x.includes(y)));
+  switch (theMode.indexOf(true)) {
+    case 0:
+      return String(keyModes[0][0]) + " Ionian";
+      break;
+    case 1:
+      return String(keyModes[0][0]) + " Dorian";
+      break;
+    case 2:
+      return String(keyModes[0][0]) + " Phrygian";
+      break;
+    case 3:
+      return String(keyModes[0][0]) + " Lydian";
+      break;
+    case 4:
+      return String(keyModes[0][0]) + " Mixolydian";
+      break;
+    case 5:
+      return String(keyModes[0][0]) + " Aeolian";
+      break;
+    case 6:
+      return String(keyModes[0][0]) + " Locrian";
+      break;
+  }
+};
+
+console.log(scaleFind("D", "G", "A", "C"));
